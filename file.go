@@ -30,7 +30,7 @@ func InsertOneDoc(db string, collection string, doc interface{}) (insertedID int
 	return insertResult.InsertedID
 }
 
-// func InsertDHS(mahasiswa Mahasiswa) (InsertedID interface{}) {
+// dhs
 func InsertDHS(mahasiswa Mahasiswa, mata_kuliah []MataKuliah) (InsertedID interface{}) {
 	var dhs Dhs
 	dhs.Mahasiswa = mahasiswa
@@ -62,4 +62,110 @@ func GetDhsAll() (dhs []Dhs) {
 		fmt.Println(err)
 	}
 	return dhs
+}
+
+// mahasiswa
+func InsertMhs(npm int, nama string, fakultas Fakultas, dosen Dosen, programStudi ProgramStudi) (InsertedID interface{}) {
+	var mhs Mahasiswa
+	mhs.Npm = npm
+	mhs.Nama = nama
+	mhs.Fakultas = fakultas
+	mhs.DosenWali = dosen
+	mhs.ProgramStudi = programStudi
+	// mhs.CreatedAt = primitive.NewDateTimeFromTime(time.Now().UTC())
+	return InsertOneDoc("db_dhs", "mahasiswa", mhs)
+}
+
+func GetMhsFromNPM(npm int) (mhs Mahasiswa) {
+	data_dhs := MongoConnect("db_dhs").Collection("mahasiswa")
+	filter := bson.M{"npm": npm}
+	err := data_dhs.FindOne(context.TODO(), filter).Decode(&mhs)
+	if err != nil {
+		fmt.Printf("GetMhsFromNPM: %v\n", err)
+	}
+	return mhs
+}
+
+func GetMhsAll() (mhs []Mahasiswa) {
+	data_mhs := MongoConnect("db_dhs").Collection("mahasiswa")
+	filter := bson.D{}
+	// var results []mhs
+	cur, err := data_mhs.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Printf("GetmhsFromNPM: %v\n", err)
+	}
+	err = cur.All(context.TODO(), &mhs)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return mhs
+}
+
+// dosen
+func InsertDosen(kode string, nama string, hp string) (InsertedID interface{}) {
+	var dosen Dosen
+	dosen.KodeDosen = kode
+	dosen.Nama = nama
+	dosen.PhoneNumber = hp
+	return InsertOneDoc("db_dhs", "dosen", dosen)
+}
+
+func GetDosenFromKodeDosen(kode string) (dosen Dosen) {
+	data_dhs := MongoConnect("db_dhs").Collection("dosen")
+	filter := bson.M{"kode_dosen": kode}
+	err := data_dhs.FindOne(context.TODO(), filter).Decode(&dosen)
+	if err != nil {
+		fmt.Printf("GetDosenFromKodeDosen: %v\n", err)
+	}
+	return dosen
+}
+
+func GetDosenAll() (dosen []Dosen) {
+	data_mhs := MongoConnect("db_dhs").Collection("dosen")
+	filter := bson.D{}
+	// var results []mhs
+	cur, err := data_mhs.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Printf("GetAllDosen: %v\n", err)
+	}
+	err = cur.All(context.TODO(), &dosen)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return dosen
+}
+
+// matkul
+func InsertMatkul(kode string, nama string, sks int, dosen Dosen) (InsertedID interface{}) {
+	var matkul MataKuliah
+	matkul.KodeMatkul = kode
+	matkul.Nama = nama
+	matkul.Sks = sks
+	matkul.Dosen = dosen
+	return InsertOneDoc("db_dhs", "matkul", matkul)
+}
+
+func GetMatkulFromKodeMatkul(kode string) (matkul MataKuliah) {
+	data_dhs := MongoConnect("db_dhs").Collection("matkul")
+	filter := bson.M{"kode_matkul": kode}
+	err := data_dhs.FindOne(context.TODO(), filter).Decode(&matkul)
+	if err != nil {
+		fmt.Printf("GetMatkulFromKodeMatkul: %v\n", err)
+	}
+	return matkul
+}
+
+func GetMatkulAll() (matkul []MataKuliah) {
+	data_mhs := MongoConnect("db_dhs").Collection("matkul")
+	filter := bson.D{}
+	// var results []mhs
+	cur, err := data_mhs.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Printf("GetMatkulAll: %v\n", err)
+	}
+	err = cur.All(context.TODO(), &matkul)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return matkul
 }
