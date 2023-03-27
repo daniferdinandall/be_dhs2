@@ -58,7 +58,7 @@ func TestGetDhsFromNPM(t *testing.T) {
 	fmt.Println(biodata)
 }
 
-// func TestGetDhsAll(t *testing.T) {
-// 	biodata := GetDhsAll()
-// 	fmt.Println(biodata.Mahasiswa.Nama)
-// }
+func TestGetDhsAll(t *testing.T) {
+	biodata := GetDhsAll()
+	fmt.Println(biodata)
+}

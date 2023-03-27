@@ -49,24 +49,17 @@ func GetDhsFromNPM(npm int) (dhs Dhs) {
 	return dhs
 }
 
-// func GetDhsAll() (dhs Dhs) {
-// 	data_dhs := MongoConnect("db_dhs").Collection("dhs")
-// 	filter := bson.D{}
-// 	var results []Dhs
-// 	cur, err := data_dhs.Find(context.TODO(), filter)
-// 	if err != nil {
-// 		fmt.Printf("GetDhsFromNPM: %v\n", err)
-// 	}
-// 	for cur.Next(context.TODO()) {
-// 		//Create a value into which the single document can be decoded
-// 		var dhs Dhs
-// 		err := cur.Decode(&dhs)
-// 		if err != nil {
-// 			// log.Fatal(err)
-// 		}
-
-// 		results = append(results, dhs)
-
-// 	}
-// 	return dhs
-// }
+func GetDhsAll() (dhs []Dhs) {
+	data_dhs := MongoConnect("db_dhs").Collection("dhs")
+	filter := bson.D{}
+	// var results []Dhs
+	cur, err := data_dhs.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Printf("GetDhsFromNPM: %v\n", err)
+	}
+	err = cur.All(context.TODO(), &dhs)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return dhs
+}
