@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	model "github.com/daniferdinandall/be_dhs2/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -31,15 +32,15 @@ func InsertOneDoc(db string, collection string, doc interface{}) (insertedID int
 }
 
 // dhs
-func InsertDHS(mahasiswa Mahasiswa, mata_kuliah []MataKuliah) (InsertedID interface{}) {
-	var dhs Dhs
+func InsertDHS(mahasiswa model.Mahasiswa, mata_kuliah []model.MataKuliah) (InsertedID interface{}) {
+	var dhs model.Dhs
 	dhs.Mahasiswa = mahasiswa
 	dhs.MataKuliah = mata_kuliah
 	dhs.CreatedAt = primitive.NewDateTimeFromTime(time.Now().UTC())
 	return InsertOneDoc("db_dhs", "dhs", dhs)
 }
 
-func GetDhsFromNPM(npm int) (dhs Dhs) {
+func GetDhsFromNPM(npm int) (dhs model.Dhs) {
 	data_dhs := MongoConnect("db_dhs").Collection("dhs")
 	filter := bson.M{"mahasiswa.npm": npm}
 	err := data_dhs.FindOne(context.TODO(), filter).Decode(&dhs)
@@ -49,7 +50,7 @@ func GetDhsFromNPM(npm int) (dhs Dhs) {
 	return dhs
 }
 
-func GetDhsAll() (dhs []Dhs) {
+func GetDhsAll() (dhs []model.Dhs) {
 	data_dhs := MongoConnect("db_dhs").Collection("dhs")
 	filter := bson.D{}
 	// var results []Dhs
@@ -65,8 +66,8 @@ func GetDhsAll() (dhs []Dhs) {
 }
 
 // mahasiswa
-func InsertMhs(npm int, nama string, fakultas Fakultas, dosen Dosen, programStudi ProgramStudi) (InsertedID interface{}) {
-	var mhs Mahasiswa
+func InsertMhs(npm int, nama string, fakultas model.Fakultas, dosen model.Dosen, programStudi model.ProgramStudi) (InsertedID interface{}) {
+	var mhs model.Mahasiswa
 	mhs.Npm = npm
 	mhs.Nama = nama
 	mhs.Fakultas = fakultas
@@ -76,7 +77,7 @@ func InsertMhs(npm int, nama string, fakultas Fakultas, dosen Dosen, programStud
 	return InsertOneDoc("db_dhs", "mahasiswa", mhs)
 }
 
-func GetMhsFromNPM(npm int) (mhs Mahasiswa) {
+func GetMhsFromNPM(npm int) (mhs model.Mahasiswa) {
 	data_dhs := MongoConnect("db_dhs").Collection("mahasiswa")
 	filter := bson.M{"npm": npm}
 	err := data_dhs.FindOne(context.TODO(), filter).Decode(&mhs)
@@ -86,7 +87,7 @@ func GetMhsFromNPM(npm int) (mhs Mahasiswa) {
 	return mhs
 }
 
-func GetMhsAll() (mhs []Mahasiswa) {
+func GetMhsAll() (mhs []model.Mahasiswa) {
 	data_mhs := MongoConnect("db_dhs").Collection("mahasiswa")
 	filter := bson.D{}
 	// var results []mhs
@@ -103,14 +104,14 @@ func GetMhsAll() (mhs []Mahasiswa) {
 
 // dosen
 func InsertDosen(kode string, nama string, hp string) (InsertedID interface{}) {
-	var dosen Dosen
+	var dosen model.Dosen
 	dosen.KodeDosen = kode
 	dosen.Nama = nama
 	dosen.PhoneNumber = hp
 	return InsertOneDoc("db_dhs", "dosen", dosen)
 }
 
-func GetDosenFromKodeDosen(kode string) (dosen Dosen) {
+func GetDosenFromKodeDosen(kode string) (dosen model.Dosen) {
 	data_dhs := MongoConnect("db_dhs").Collection("dosen")
 	filter := bson.M{"kode_dosen": kode}
 	err := data_dhs.FindOne(context.TODO(), filter).Decode(&dosen)
@@ -120,7 +121,7 @@ func GetDosenFromKodeDosen(kode string) (dosen Dosen) {
 	return dosen
 }
 
-func GetDosenAll() (dosen []Dosen) {
+func GetDosenAll() (dosen []model.Dosen) {
 	data_mhs := MongoConnect("db_dhs").Collection("dosen")
 	filter := bson.D{}
 	// var results []mhs
@@ -136,8 +137,8 @@ func GetDosenAll() (dosen []Dosen) {
 }
 
 // matkul
-func InsertMatkul(kode string, nama string, sks int, dosen Dosen) (InsertedID interface{}) {
-	var matkul MataKuliah
+func InsertMatkul(kode string, nama string, sks int, dosen model.Dosen) (InsertedID interface{}) {
+	var matkul model.MataKuliah
 	matkul.KodeMatkul = kode
 	matkul.Nama = nama
 	matkul.Sks = sks
@@ -145,7 +146,7 @@ func InsertMatkul(kode string, nama string, sks int, dosen Dosen) (InsertedID in
 	return InsertOneDoc("db_dhs", "matkul", matkul)
 }
 
-func GetMatkulFromKodeMatkul(kode string) (matkul MataKuliah) {
+func GetMatkulFromKodeMatkul(kode string) (matkul model.MataKuliah) {
 	data_dhs := MongoConnect("db_dhs").Collection("matkul")
 	filter := bson.M{"kode_matkul": kode}
 	err := data_dhs.FindOne(context.TODO(), filter).Decode(&matkul)
@@ -155,7 +156,7 @@ func GetMatkulFromKodeMatkul(kode string) (matkul MataKuliah) {
 	return matkul
 }
 
-func GetMatkulAll() (matkul []MataKuliah) {
+func GetMatkulAll() (matkul []model.MataKuliah) {
 	data_mhs := MongoConnect("db_dhs").Collection("matkul")
 	filter := bson.D{}
 	// var results []mhs

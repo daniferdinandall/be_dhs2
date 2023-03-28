@@ -3,23 +3,26 @@ package namapackage
 import (
 	"fmt"
 	"testing"
+
+	model "github.com/daniferdinandall/be_dhs2/model"
+	module "github.com/daniferdinandall/be_dhs2/module"
 )
 
 func TestInsertPresensi(t *testing.T) {
-	mahasiswa := Mahasiswa{
+	mahasiswa := model.Mahasiswa{
 		Npm:  1214036,
 		Nama: "Erdito Nausha Adam",
-		Fakultas: Fakultas{
+		Fakultas: model.Fakultas{
 			Nama: "Sekolah Vokasi",
 		},
-		ProgramStudi: ProgramStudi{
+		ProgramStudi: model.ProgramStudi{
 			Nama: "D4 Teknik Informatika",
 		},
-		DosenWali: Dosen{
+		DosenWali: model.Dosen{
 			Nama: " Rd. NURAINI SITI FATHONAH, S.S., M.Hum.,SFPC",
 		},
 	}
-	mata_kuliah := []MataKuliah{
+	mata_kuliah := []model.MataKuliah{
 		{
 			KodeMatkul: "TI41061",
 			Nama:       "ALGORITMA DAN STRUKTUR DATA I",
@@ -48,18 +51,18 @@ func TestInsertPresensi(t *testing.T) {
 		},
 	}
 
-	hasil := InsertDHS(mahasiswa, mata_kuliah)
+	hasil := module.InsertDHS(mahasiswa, mata_kuliah)
 	fmt.Println(hasil)
 }
 
 func TestGetDhsFromNPM(t *testing.T) {
 	npm := 1214049
-	biodata := GetDhsFromNPM(npm)
+	biodata := module.GetDhsFromNPM(npm)
 	fmt.Println(biodata)
 }
 
 func TestGetDhsAll(t *testing.T) {
-	biodata := GetDhsAll()
+	biodata := module.GetDhsAll()
 	fmt.Println(biodata)
 }
 
@@ -67,28 +70,28 @@ func TestGetDhsAll(t *testing.T) {
 func TestInsertMhs(t *testing.T) {
 	npm := 1214049
 	nama := "Auliana Fahrian Bani Ridwan"
-	fakultas := Fakultas{
+	fakultas := model.Fakultas{
 		Nama: "Sekolah Vokasi",
 	}
-	programStudi := ProgramStudi{
+	programStudi := model.ProgramStudi{
 		Nama: "D4 Teknik Informatika",
 	}
-	dosen := Dosen{
+	dosen := model.Dosen{
 		Nama: " Rd. NURAINI SITI FATHONAH, S.S., M.Hum.,SFPC",
 	}
 
-	hasil := InsertMhs(npm, nama, fakultas, dosen, programStudi)
+	hasil := module.InsertMhs(npm, nama, fakultas, dosen, programStudi)
 	fmt.Println(hasil)
 }
 
 func TestGetMhsFromNPM(t *testing.T) {
 	npm := 1214049
-	biodata := GetMhsFromNPM(npm)
+	biodata := module.GetMhsFromNPM(npm)
 	fmt.Println(biodata)
 }
 
 func TestGetMhsAll(t *testing.T) {
-	biodata := GetMhsAll()
+	biodata := module.GetMhsAll()
 	fmt.Println(biodata)
 }
 
@@ -98,18 +101,18 @@ func TestInsertDosen(t *testing.T) {
 	nama := "NISA HANUM HARANI"
 	hp := "09876215321"
 
-	hasil := InsertDosen(kode, nama, hp)
+	hasil := module.InsertDosen(kode, nama, hp)
 	fmt.Println(hasil)
 }
 
 func TestGetDosenFromKodeDosen(t *testing.T) {
 	kode := "001"
-	biodata := GetDosenFromKodeDosen(kode)
+	biodata := module.GetDosenFromKodeDosen(kode)
 	fmt.Println(biodata)
 }
 
 func TestGetDosenAll(t *testing.T) {
-	biodata := GetDosenAll()
+	biodata := module.GetDosenAll()
 	fmt.Println(biodata)
 }
 
@@ -118,21 +121,21 @@ func TestInsertMatkul(t *testing.T) {
 	kode := "TI41092"
 	nama := "LITERASI TEKNOLOGI"
 	sks := 3
-	dosen := Dosen{
+	dosen := model.Dosen{
 		Nama: "Roni Habibi, S.Kom., M.T., SFPC",
 	}
 
-	hasil := InsertMatkul(kode, nama, sks, dosen)
+	hasil := module.InsertMatkul(kode, nama, sks, dosen)
 	fmt.Println(hasil)
 }
 
 func TestMatkulFromKodeMatkul(t *testing.T) {
 	kode := "TI41061"
-	biodata := GetMatkulFromKodeMatkul(kode)
+	biodata := module.GetMatkulFromKodeMatkul(kode)
 	fmt.Println(biodata)
 }
 
 func TestMatkulAll(t *testing.T) {
-	biodata := GetMatkulAll()
+	biodata := module.GetMatkulAll()
 	fmt.Println(biodata)
 }
