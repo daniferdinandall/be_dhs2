@@ -8,10 +8,53 @@ import (
 	module "github.com/daniferdinandall/be_dhs2/module"
 )
 
+// Presensi
 func TestInsertPresensi(t *testing.T) {
+	var jamKerja1 = model.JamKerja{
+		Durasi:     8,
+		Jam_masuk:  "08:00",
+		Jam_keluar: "16:00",
+		Gmt:        7,
+		Hari:       []string{"Senin", "Rabu", "Kamis"},
+		Shift:      1,
+		Piket_tim:  "Piket A",
+	}
+	var jamKerja2 = model.JamKerja{
+		Durasi:     8,
+		Jam_masuk:  "09:00",
+		Jam_keluar: "17:00",
+		Gmt:        7,
+		Hari:       []string{"Sabtu"},
+		Shift:      2,
+		Piket_tim:  "",
+	}
+
+	long := 98.345345
+	lat := 123.561651
+	lokasi := "New York"
+	phonenumber := "6811110023231"
+	checkin := "masuk"
+	biodata := model.Karyawan{
+		Nama:        "George Best",
+		PhoneNumber: "6284564562",
+		Jabatan:     "Football Player",
+		Jam_kerja:   []model.JamKerja{jamKerja1, jamKerja2},
+		Hari_kerja:  []string{"Senin", "Selasa"},
+	}
+	insertedID, err := module.InsertPresensi(module.MongoConn, "presensi", long, lat, lokasi, phonenumber, checkin, biodata)
+	if err != nil {
+		t.Errorf("Error inserting data: %v", err)
+	}
+	fmt.Printf("Data berhasil disimpan dengan id %s", insertedID.Hex())
+}
+
+// ========================
+// DHS
+// dhs
+func TestInsertDhs(t *testing.T) {
 	mahasiswa := model.Mahasiswa{
-		Npm:  1214036,
-		Nama: "Erdito Nausha Adam",
+		Npm:  1214070,
+		Nama: "Farel Nouval Daswara",
 		Fakultas: model.Fakultas{
 			Nama: "Sekolah Vokasi",
 		},
@@ -32,22 +75,22 @@ func TestInsertPresensi(t *testing.T) {
 			KodeMatkul: "TI41092",
 			Nama:       "ALJABAR LINIER",
 			Sks:        2,
-			Nilai:      "AB",
+			Nilai:      "A",
 		}, {
 			KodeMatkul: "PPI01040",
 			Nama:       "BAHASA INDONESIA",
 			Sks:        2,
-			Nilai:      "A",
+			Nilai:      "AB",
 		}, {
 			KodeMatkul: "TI42011",
 			Nama:       "LITERASI TEKNOLOGI",
 			Sks:        2,
-			Nilai:      "A",
+			Nilai:      "BC",
 		}, {
 			KodeMatkul: "TI41071",
 			Nama:       "ALGORITMAPEMOGRAMAN I",
 			Sks:        3,
-			Nilai:      "AB",
+			Nilai:      "A",
 		},
 	}
 
@@ -68,8 +111,8 @@ func TestGetDhsAll(t *testing.T) {
 
 // mhs
 func TestInsertMhs(t *testing.T) {
-	npm := 1214049
-	nama := "Auliana Fahrian Bani Ridwan"
+	npm := 1214070
+	nama := "Farel Nouval Daswara"
 	fakultas := model.Fakultas{
 		Nama: "Sekolah Vokasi",
 	}
@@ -118,11 +161,11 @@ func TestGetDosenAll(t *testing.T) {
 
 // dosen
 func TestInsertMatkul(t *testing.T) {
-	kode := "TI41092"
-	nama := "LITERASI TEKNOLOGI"
+	kode := "TI41264"
+	nama := "PEMOGRAMAN III (WEBSERVICE)"
 	sks := 3
 	dosen := model.Dosen{
-		Nama: "Roni Habibi, S.Kom., M.T., SFPC",
+		Nama: "Indra Riksa Herlambang",
 	}
 
 	hasil := module.InsertMatkul(kode, nama, sks, dosen)
