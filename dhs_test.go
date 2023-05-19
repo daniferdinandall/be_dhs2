@@ -6,6 +6,7 @@ import (
 
 	model "github.com/daniferdinandall/be_dhs2/model"
 	module "github.com/daniferdinandall/be_dhs2/module"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // Presensi
@@ -46,6 +47,25 @@ func TestInsertPresensi(t *testing.T) {
 		t.Errorf("Error inserting data: %v", err)
 	}
 	fmt.Printf("Data berhasil disimpan dengan id %s", insertedID.Hex())
+}
+
+func TestDeletePresensiByID(t *testing.T) {
+	id := "6422e300f590e691c91082cb" // ID data yang ingin dihapus
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		t.Fatalf("error converting id to ObjectID: %v", err)
+	}
+
+	err = module.DeletePresensiByID(objectID, module.MongoConn, "presensi")
+	if err != nil {
+		t.Fatalf("error calling DeletePresensiByID: %v", err)
+	}
+
+	// Verifikasi bahwa data telah dihapus dengan melakukan pengecekan menggunakan GetPresensiFromID
+	_, err = module.GetPresensiFromID(objectID, module.MongoConn, "presensi")
+	if err == nil {
+		t.Fatalf("expected data to be deleted, but it still exists")
+	}
 }
 
 // ========================
